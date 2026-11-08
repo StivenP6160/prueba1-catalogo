@@ -91,3 +91,24 @@ describe('DELETE /api/categories/:id', () => {
     expect(res.status).toBe(204);
   });
 });
+
+describe('PUT /api/categories/:id', () => {
+  test('actualiza el nombre', async () => {
+    const res = await request(app).put('/api/categories/1').send({ name: 'Camisetas y polos' });
+
+    expect(res.status).toBe(200);
+    expect(res.body.data.name).toBe('Camisetas y polos');
+  });
+
+  test('devuelve 409 si el nombre ya lo tiene otra categoría', async () => {
+    const res = await request(app).put('/api/categories/1').send({ name: 'Calzado' });
+
+    expect(res.status).toBe(409);
+  });
+
+  test('devuelve 404 si la categoría no existe', async () => {
+    const res = await request(app).put('/api/categories/999').send({ name: 'Lo que sea' });
+
+    expect(res.status).toBe(404);
+  });
+});
