@@ -48,14 +48,14 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "{{baseUrl}}/api/categories/",
+          "raw": "{{baseUrl}}/api/categories/1",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "api",
             "categories",
-            ""
+            "1"
           ]
         }
       },
@@ -103,14 +103,14 @@
           }
         },
         "url": {
-          "raw": "{{baseUrl}}/api/categories/4\t",
+          "raw": "{{baseUrl}}/api/categories/1\t",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "api",
             "categories",
-            "4\t"
+            "1\t"
           ]
         }
       },
@@ -207,13 +207,51 @@
       "response": []
     },
     {
-      "name": "Agregar producto y descripcion",
+      "name": "Borrar producto",
       "request": {
         "method": "DELETE",
         "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/products/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "products",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Ver producto",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/products/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "products",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Crear producto",
+      "request": {
+        "method": "POST",
+        "header": [],
         "body": {
           "mode": "raw",
-          "raw": "",
+          "raw": "{ \"sku\": \"cal-004\", \"name\": \"Medias deportivas\", \"description\": \"Pack x3\", \"price\": 24900, \"stock\": 30, \"category_id\": 3 }",
           "options": {
             "raw": {
               "language": "json"
@@ -221,14 +259,41 @@
           }
         },
         "url": {
-          "raw": "{{baseUrl}}/api/products/12",
+          "raw": "{{baseUrl}}/api/products",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "products"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Editar producto",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{ \"price\": 35900 }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/products/1",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "api",
             "products",
-            "12"
+            "1"
           ]
         }
       },
@@ -238,7 +303,7 @@
   "variable": [
     {
       "key": "baseUrl",
-      "value": ""
+      "value": "http://localhost:3000"
     }
   ]
 }
