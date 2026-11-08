@@ -63,4 +63,41 @@ async function findById(id) {
   return rows[0];
 }
 
-module.exports = { findAll, count, findById };
+async function create(product) {
+  const [result] = await pool.execute(
+    `INSERT INTO products (sku, name, description, price, stock, category_id)
+     VALUES (?, ?, ?, ?, ?, ?)`,
+    [
+      product.sku,
+      product.name,
+      product.description ?? null,
+      product.price,
+      product.stock ?? 0,
+      product.category_id,
+    ]
+  );
+  return result.insertId;
+}
+
+const UPDATABLE_FIELDS = ['sku', 'name', 'description', 'price', 'stock', 'category_id'];
+
+async function update(id, changes) {
+  const fields = UPDATABLE_FIELDS.filter((field) => changes[field] !== undefined);
+  const setClause = fields.map((field) => `${field} = ?`).join(', ');
+  const values = fields.map((field) => changes[field]);
+
+  await pool.execute(
+    `UPDATE products SET ${setClause} WHERE id = ? AND is_active = TRUE`,
+    [...values, id]
+  );
+}
+
+async function softDelete(id) {
+  const [result] = await pool.execute(
+    'UPDATE products SET is_active = FALSE WHERE id = ? AND is_active = TRUE',
+    [id]
+  );
+  return result.affectedRows;
+}
+
+module.exports = { findAll, count, findById, create, update, softDelete };

@@ -51,4 +51,40 @@ async function getById(id) {
   return product;
 }
 
-module.exports = { list, getById };
+function translateDbError(error) {
+  if (error.code === 'ER_DUP_ENTRY') {
+    throw new AppError('Ya existe un producto con ese SKU', 409);
+  }
+  if (error.code === 'ER_NO_REFERENCED_ROW_2') {
+    throw new AppError('La categoría indicada no existe', 400);
+  }
+  throw error;
+}
+
+async function create(data) {
+  try {
+    const newId = await productRepository.create(data);
+    return getById(newId);
+  } catch (error) {
+    translateDbError(error);
+  }
+}
+
+async function update(id, changes) {
+  const product = await getById(id);
+  try {
+    await productRepository.update(product.id, changes);
+  } catch (error) {
+    translateDbError(error);
+  }
+  return getById(product.id);
+}
+
+async function remove(id) {
+  const affected = await productRepository.softDelete(parseId(id));
+  if (affected === 0) {
+    throw new AppError('Producto no encontrado', 404);
+  }
+}
+
+module.exports = { list, getById, create, update, remove };
