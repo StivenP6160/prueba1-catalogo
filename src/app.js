@@ -2,6 +2,7 @@ const express = require('express');
 const pool = require('./db');
 const categoryRoutes = require('./routes/categoryRoutes');
 const { notFound, errorHandler } = require('./middlewares/errorHandler');
+const productRoutes = require('./routes/productRoutes');
 
 const app = express();
 
@@ -13,6 +14,8 @@ app.get('/health', async (req, res) => {
 });
 
 app.use('/api/categories', categoryRoutes);
+
+app.use('/api/products', productRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

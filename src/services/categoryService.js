@@ -1,13 +1,6 @@
 const categoryRepository = require('../repositories/categoryRepository');
 const AppError = require('../utils/AppError');
-
-function parseId(id) {
-  const number = Number(id);
-  if (!Number.isInteger(number) || number <= 0) {
-    throw new AppError('El id debe ser un número entero positivo', 400);
-  }
-  return number;
-}
+const { parseId } = require('../utils/validators');
 
 function validateName(name) {
   if (typeof name !== 'string') {
